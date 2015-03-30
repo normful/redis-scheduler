@@ -35,11 +35,21 @@ var Scheduler = function (options) {
   options = options || {};
   var host = options.host || 'localhost';
   var port = options.port || 6379;
+  var pass = options.pass;
+
+  var createClient = function (port, host, pass) {
+    var client = redis.createClient(port, host);
+    if (pass !== undefined) {
+      client.auth(pass);
+    }
+    return client;
+  };
 
   this.clients = {
-    scheduler: redis.createClient(port, host),
-    listener: redis.createClient(port, host)
+    scheduler: createClient(port, host, pass),
+    listener:  createClient(port, host, pass)
   };
+
   this.handlers = {};
   this.patterns = {};
   this.setRedisEvents();
