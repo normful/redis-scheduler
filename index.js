@@ -141,6 +141,14 @@ Scheduler.prototype.addHandler = function (options) {
   }
 };
 
+Scheduler.prototype.del = function (options, cb) {
+  this.clients.scheduler.del(options, function (err) {
+    if (cb) {
+      cb(err);
+    }
+  });
+};
+
 Scheduler.prototype.cancel = function (options, cb) {
   var validations = functionValidations.cancel.validate(options);
   if (validations.error) {
